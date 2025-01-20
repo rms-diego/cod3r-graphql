@@ -4,6 +4,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 const typeDefs = `#graphql
   type Query {
     hello: String
+    horaCerta: String
   }
 
 `;
@@ -11,6 +12,7 @@ const typeDefs = `#graphql
 const resolvers = {
   Query: {
     hello: () => "Hello, world!",
+    horaCerta: () => new Date().toLocaleString(),
   },
 };
 
