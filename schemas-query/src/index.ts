@@ -2,9 +2,12 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
 const typeDefs = `#graphql
+
+  scalar Date
+
   type Query {
     hello: String
-    horaCerta: String
+    horaCerta: Date
   }
 
 `;
@@ -12,7 +15,7 @@ const typeDefs = `#graphql
 const resolvers = {
   Query: {
     hello: () => "Hello, world!",
-    horaCerta: () => new Date().toLocaleString(),
+    horaCerta: () => new Date(),
   },
 };
 
