@@ -10,7 +10,7 @@ const typeDefs = `#graphql
     name: String!
     email: String!
     age: Int!
-    salary: Int!
+    salary: String!
     vip: Boolean!
   }
 
@@ -23,6 +23,14 @@ const typeDefs = `#graphql
 `;
 
 const resolvers = {
+  User: {
+    salary: (user: { salary: number }) => {
+      return `R$ ${Intl.NumberFormat("pt-BR", {
+        currency: "BRL",
+      }).format(user.salary)}`;
+    },
+  },
+
   Query: {
     hello: () => "Hello, world!",
     rightHour: () => new Date(),
@@ -31,7 +39,7 @@ const resolvers = {
       name: "John Doe",
       email: "some.mail@email.com",
       age: 24,
-      salary: 2000,
+      salary: 2000.58,
       vip: true,
     }),
   },
