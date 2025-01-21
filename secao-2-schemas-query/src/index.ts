@@ -1,6 +1,42 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  age: number;
+  salary: string;
+  vip: boolean;
+};
+
+const users: User[] = [
+  {
+    id: crypto.randomUUID(),
+    age: 24,
+    email: "some.mail@email.com",
+    name: "John Doe",
+    salary: "2000.58",
+    vip: true,
+  },
+  {
+    id: crypto.randomUUID(),
+    age: 30,
+    email: "some.mail@email.com",
+    name: "foo",
+    salary: "4000.00",
+    vip: true,
+  },
+  {
+    id: crypto.randomUUID(),
+    age: 50,
+    email: "some.mail@email.com",
+    name: "Aobandinho",
+    salary: "15000.00",
+    vip: true,
+  },
+];
+
 const typeDefs = `#graphql
   scalar Date
 
@@ -24,9 +60,10 @@ const typeDefs = `#graphql
   type Query {
     hello: String!
     rightHour: Date!
-    authUser: User!
+    getUser: User!
     product: Product
     lotteryNumbers: [Int!]!
+    getUsers: [User!]!
   }
 `;
 
@@ -37,10 +74,20 @@ const resolvers = {
         currency: "BRL",
       }).format(price - (price * discount) / 100)}`,
   },
+
+  User: {
+    salary: (user: User) => {
+      return Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(Number(user.salary));
+    },
+  },
+
   Query: {
     hello: () => "Hello, world!",
     rightHour: () => new Date(),
-    authUser: () => ({
+    getUser: () => ({
       id: crypto.randomUUID(),
       name: "John Doe",
       email: "some.mail@email.com",
@@ -55,6 +102,7 @@ const resolvers = {
     }),
     lotteryNumbers: () =>
       Array.from({ length: 6 }, () => Math.floor(Math.random() * 60) + 1).sort(),
+    getUsers: () => users,
   },
 };
 
