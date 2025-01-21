@@ -14,21 +14,27 @@ const typeDefs = `#graphql
     vip: Boolean!
   }
 
+  type Product {
+    name: String!
+    price: Int!
+    discount: Float!
+    finalPrice: String!
+  }
+
   type Query {
     hello: String!
     rightHour: Date!
     authUser: User!
+    product: Product
   }
-
 `;
 
 const resolvers = {
-  User: {
-    salary: (user: { salary: number }) => {
-      return `R$ ${Intl.NumberFormat("pt-BR", {
+  Product: {
+    finalPrice: ({ price, discount }: { price: number; discount: number }) =>
+      `R$ ${Intl.NumberFormat("pt-BR", {
         currency: "BRL",
-      }).format(user.salary)}`;
-    },
+      }).format(price - (price * discount) / 100)}`,
   },
 
   Query: {
@@ -41,6 +47,12 @@ const resolvers = {
       age: 24,
       salary: 2000.58,
       vip: true,
+    }),
+
+    product: () => ({
+      name: "Smartphone",
+      price: 6000,
+      discount: 0.1,
     }),
   },
 };
