@@ -26,6 +26,7 @@ const typeDefs = `#graphql
     rightHour: Date!
     authUser: User!
     product: Product
+    lotteryNumbers: [Int!]!
   }
 `;
 
@@ -36,7 +37,6 @@ const resolvers = {
         currency: "BRL",
       }).format(price - (price * discount) / 100)}`,
   },
-
   Query: {
     hello: () => "Hello, world!",
     rightHour: () => new Date(),
@@ -48,12 +48,13 @@ const resolvers = {
       salary: 2000.58,
       vip: true,
     }),
-
     product: () => ({
       name: "Smartphone",
       price: 6000,
       discount: 0.1,
     }),
+    lotteryNumbers: () =>
+      Array.from({ length: 6 }, () => Math.floor(Math.random() * 60) + 1).sort(),
   },
 };
 
