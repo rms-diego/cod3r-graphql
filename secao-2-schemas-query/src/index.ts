@@ -64,6 +64,7 @@ const typeDefs = `#graphql
     product: Product
     lotteryNumbers: [Int!]!
     getUsers: [User!]!
+    getById(id: ID!): User
   }
 `;
 
@@ -103,6 +104,7 @@ const resolvers = {
     lotteryNumbers: () =>
       Array.from({ length: 6 }, () => Math.floor(Math.random() * 60) + 1).sort(),
     getUsers: () => users,
+    getById: (_, { id }: { id: string }) => users.find((user) => user.id === id),
   },
 };
 
